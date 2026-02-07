@@ -147,9 +147,9 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                     'Teste FAST → Face, Arms, Speech, Time',
                     'Ligar 192 imediatamente',
                     'Não dar comida, bebida ou medicamento'
-                ]
+                ],
+                'source': 'SBC / AHA'
             },
-            # ... você pode manter ou adicionar os outros protocolos originais aqui
         }
 
     def _init_survival_guide(self):
@@ -262,8 +262,8 @@ Use apenas: {self.NAME}
 """
 
         # Saudação personalizada
-        if "olá, boa tarde" in input_lower:
-            return f"Olá, sou {self.NAME}. Em que posso ajudar?"
+        if "olá" in input_lower or "boa" in input_lower:
+            return f"Olá, sou {self.NAME}. Em que posso ajudar hoje?"
 
         if not input_lower or input_lower in ['oi', 'ola', 'start', self.NAME.lower()]:
             return f"""
@@ -292,27 +292,47 @@ Sempre: Em emergência real → LIGUE 192
 
         if 'protocolos' in input_lower:
             lista = "\n".join([f"• {v['name']}" for k,v in self.PROTOCOLS.items()])
-            return f"{self.NAME} - PROTOCOLOS DE PRIMEIROS SOCORROS\n\n{lista}\n\nDigite o nome para detalhes (ex: parada cardíaca)"
+            return f"{self.NAME} - PROTOCOLOS DE PRIMEIROS SOCORROS\n\n{lista}\n\nDigite o nome para detalhes (ex: parada cardíaca, infarto, hemorragia, avc)"
 
         if 'sobrevivencia' in input_lower:
             lista = "\n".join([f"• {k.upper()}: {v['name']}" for k,v in self.SURVIVAL_GUIDE.items()])
-            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo)"
+            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo, hipotermia)"
 
-        # Exemplos de acesso rápido a temas
-        if any(x in input_lower for x in ['abrigo', 'shelter']):
-            return self._format_survival_section('abrigo')
-        if any(x in input_lower for x in ['agua', 'água', 'water']):
-            return self._format_survival_section('agua')
-        if any(x in input_lower for x in ['fogo', 'fire']):
-            return self._format_survival_section('fogo')
-        if any(x in input_lower for x in ['alimento', 'comida', 'food']):
-            return self._format_survival_section('alimento')
+        # Acesso rápido a temas de sobrevivência
+        survival_map = {
+            'abrigo': 'abrigo',
+            'shelter': 'abrigo',
+            'agua': 'agua', 'água': 'agua', 'water': 'agua',
+            'fogo': 'fogo', 'fire': 'fogo',
+            'alimento': 'alimento', 'comida': 'alimento', 'food': 'alimento',
+            'navegacao': 'navegacao', 'orientacao': 'navegacao',
+            'sinalizacao': 'sinalizacao', 'sinal': 'sinalizacao',
+            'hipotermia': 'hipotermia',
+            'prioridade': 'prioridade',
+        }
 
-        # Protocolos médicos (exemplo simples)
-        if 'parada' in input_lower or 'rcp' in input_lower:
-            return self._format_protocol('cardiac_arrest')
+        for keyword, key in survival_map.items():
+            if keyword in input_lower:
+                return self._format_survival_section(key)
 
-        return f"{self.NAME}: Comando não reconhecido. Digite 'ajuda' para opções."
+        # Protocolos médicos
+        protocol_map = {
+            'parada': 'cardiac_arrest',
+            'rcp': 'cardiac_arrest',
+            'infarto': 'heart_attack',
+            'coração': 'heart_attack',
+            'hemorragia': 'severe_bleeding',
+            'sangra': 'severe_bleeding',
+            'sangramento': 'severe_bleeding',
+            'avc': 'stroke',
+            'derrame': 'stroke',
+        }
+
+        for keyword, key in protocol_map.items():
+            if keyword in input_lower:
+                return self._format_protocol(key)
+
+        return f"{self.NAME}: Comando não reconhecido. Digite 'ajuda' para ver as opções."
 
     def _format_protocol(self, key: str) -> str:
         if key not in self.PROTOCOLS:
@@ -323,24 +343,43 @@ Sempre: Em emergência real → LIGUE 192
 
 {'\n'.join(p['steps'])}
 
-Fonte: {p.get('source', 'Atualizado 2025')}
+Fonte: {p.get('source', 'Atualizado 2025–2026')}
 Criador: {self.CREATOR_NAME}
 Ligue 192 imediatamente!
 """
 
     def _format_survival_section(self, key: str) -> str:
         if key not in self.SURVIVAL_GUIDE:
-            return f"{self.NAME}: Seção não encontrada."
-        s = self.SURVIVAL_GUIDE[key]
-        content = "\n".join(s.get('content', []) or s.get('dicas', []) or s.get('fontes', []))
-        return f"""
-🌲 {self.NAME} - {s['name']}
+            return f"{self.NAME}: Seção '{key}' não encontrada."
 
-{content}
+        section = self.SURVIVAL_GUIDE[key]
+        title = section.get('name', key.replace('_', ' ').title())
+
+        content_lines = []
+        for field in ['content', 'steps', 'dicas', 'fontes', 'metodos', 'purificacao', 'tecnicas']:
+            if field in section:
+                content_lines.extend([line for line in section[field] if isinstance(line, str) and line.strip()])
+
+        if 'ambientes' in section:
+            for env, desc in section['ambientes'].items():
+                content_lines.append(f"→ {env.capitalize()}: {desc}")
+
+        content = "\n".join(f"  • {line}" for line in content_lines if line.strip())
+
+        return f"""
+🌿 {self.NAME} - {title}
+
+{content or 'Conteúdo em breve.'}
 
 Criador: {self.CREATOR_NAME}
-Priorize segurança e sinalização de resgate.
+Priorize segurança e sinal de resgate.
 """
+
+    def _init_diagnostic_system(self):
+        pass  # pode implementar depois se quiser um modo de perguntas
+
+    def _init_quick_reference(self):
+        pass  # pode implementar depois se quiser atalhos rápidos
 
 # ────────────────────────────────────────
 # EXECUÇÃO PRINCIPAL
@@ -354,14 +393,14 @@ if __name__ == "__main__":
         try:
             entrada = input("\n>>> ").strip()
             if entrada.lower() in ['sair', 'exit', 'quit']:
-                print(f"\n{ pandora.NAME }: Sistema encerrado. Em emergência: 192!")
+                print(f"\n{pandora.NAME}: Sistema encerrado. Em emergência: 192!")
                 break
 
             resposta = pandora.get_response(entrada)
             print(f"\n{resposta}")
 
         except KeyboardInterrupt:
-            print(f"\n{ pandora.NAME }: Interrompido. Ligue 192 se for emergência.")
+            print(f"\n{pandora.NAME}: Interrompido. Ligue 192 se for emergência.")
             break
         except Exception as e:
             print(f"\nErro: {str(e)}")
