@@ -25,6 +25,7 @@ class PANDORAEnhancedUltimate(PANDORA):
     """
     PANDORA Ultimate 2025–2026
     Sistema offline de Primeiros Socorros + Guia Militar de Sobrevivência
+    Inclui agora: Medidas contra contaminação radioativa
     """
 
     # ────────────────────────────────────────────────────────────────
@@ -153,7 +154,7 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
         }
 
     def _init_survival_guide(self):
-        """Guia Militar de Sobrevivência - Multi-Ambiente"""
+        """Guia Militar de Sobrevivência - Multi-Ambiente + Radiação"""
         self.SURVIVAL_GUIDE = {
             'prioridade': {
                 'name': 'Regra dos 3 (Prioridades de Sobrevivência)',
@@ -243,6 +244,21 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                     'Aquecer tronco (contato pele a pele se possível)',
                     'Bebidas quentes (não álcool!)'
                 ]
+            },
+            # Nova seção adicionada
+            'radiação': {
+                'name': 'Contaminação Radioativa – Medidas Urgentes',
+                'priority': 'EXTREMAMENTE CRÍTICA',
+                'steps': [
+                    '1. SAIA IMEDIATAMENTE da zona contaminada – corra na direção contrária ao vento se possível',
+                    '2. Remova TODAS as roupas externas (não as sacuda) e deixe-as no local',
+                    '3. Lave o corpo inteiro com água e sabão (ou pano úmido) por pelo menos 15–20 minutos; evite esfregar forte',
+                    '4. Não coma, beba ou fume nada que possa ter sido exposto à radiação',
+                    '5. Cubra-se com roupas limpas ou cobertor; isole-se de outras pessoas (quarentena mínima 24h até avaliação)',
+                    '6. Ligue imediatamente para 193 (Bombeiros), 192 (SAMU) ou Defesa Civil – informe localização e suspeita de radiação',
+                    'Aviso: Radiação não tem cheiro, cor ou sabor. Sintomas podem demorar horas/dias. Não espere sentir nada.'
+                ],
+                'source': 'Orientações IAEA / Defesa Civil / CDC adaptadas 2025–2026'
             }
         }
 
@@ -282,7 +298,7 @@ Digite:
 {self.NAME} - COMANDOS DISPONÍVEIS
 
 • protocolos     → Primeiros socorros (RCP, infarto, AVC, hemorragia...)
-• sobrevivencia  → Guia Militar de Sobrevivência (abrigo, água, fogo, alimento...)
+• sobrevivencia  → Guia Militar de Sobrevivência (abrigo, água, fogo, alimento, radiação...)
 • ajuda          → esta mensagem
 • sair           → encerrar
 
@@ -296,7 +312,7 @@ Sempre: Em emergência real → LIGUE 192
 
         if 'sobrevivencia' in input_lower:
             lista = "\n".join([f"• {k.upper()}: {v['name']}" for k,v in self.SURVIVAL_GUIDE.items()])
-            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo, hipotermia)"
+            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo, radiação, hipotermia)"
 
         # Acesso rápido a temas de sobrevivência
         survival_map = {
@@ -309,6 +325,10 @@ Sempre: Em emergência real → LIGUE 192
             'sinalizacao': 'sinalizacao', 'sinal': 'sinalizacao',
             'hipotermia': 'hipotermia',
             'prioridade': 'prioridade',
+            'radiação': 'radiação',
+            'radioativo': 'radiação',
+            'contaminação': 'radiação',
+            'radioatividade': 'radiação',
         }
 
         for keyword, key in survival_map.items():
@@ -354,6 +374,7 @@ Ligue 192 imediatamente!
 
         section = self.SURVIVAL_GUIDE[key]
         title = section.get('name', key.replace('_', ' ').title())
+        priority = section.get('priority', '')
 
         content_lines = []
         for field in ['content', 'steps', 'dicas', 'fontes', 'metodos', 'purificacao', 'tecnicas']:
@@ -366,11 +387,14 @@ Ligue 192 imediatamente!
 
         content = "\n".join(f"  • {line}" for line in content_lines if line.strip())
 
+        priority_text = f"({priority})" if priority else ""
+
         return f"""
-🌿 {self.NAME} - {title}
+🌿 {self.NAME} - {title} {priority_text}
 
 {content or 'Conteúdo em breve.'}
 
+Fonte: {section.get('source', 'Guia Militar / Atualização 2025–2026')}
 Criador: {self.CREATOR_NAME}
 Priorize segurança e sinal de resgate.
 """
