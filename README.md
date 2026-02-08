@@ -1,4 +1,3 @@
-import json
 import os
 import sys
 import hashlib
@@ -7,7 +6,7 @@ from typing import Dict, List, Optional
 
 class PANDORA:
     """
-    Classe base - mantida para compatibilidade
+    Classe base - mantida para compatibilidade futura
     """
     def __init__(self):
         self.protocols = {}
@@ -25,8 +24,8 @@ class PANDORAEnhancedUltimate(PANDORA):
     """
     PANDORA Enhanced Ultimate 2.1 – 2026
     Sistema offline de Primeiros Socorros + Guia Militar de Sobrevivência
-    Inclui: Medidas contra contaminação radioativa
     Criador: Alexander Chrysostomo Dias
+    Nunca desiste. Nunca apaga.
     """
 
     # IDENTIDADE IMUTÁVEL - NÃO ALTERAR ESTAS LINHAS
@@ -83,7 +82,7 @@ IDENTIFICAÇÃO OFICIAL:
 Comandos iniciais:
 • ajuda          → lista comandos
 • protocolos     → primeiros socorros
-• sobrevivencia  → guia de sobrevivência
+• sobrevivencia  → guia militar de sobrevivência
 • sair           → encerra
 
 Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
@@ -100,28 +99,29 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
         return None
 
     def _init_enhanced_protocols(self):
+        """Primeiros socorros básicos militares"""
         self.PROTOCOLS = {
             'cardiac_arrest': {
                 'name': 'Parada Cardíaca',
                 'priority': 'CRÍTICA',
                 'steps': [
-                    '1. Segurança da cena',
-                    '2. Verificar resposta (chacoalhar + "Você está bem?")',
-                    '3. Chamar 192 e pedir DEA',
-                    '4. Verificar respiração (máx 10s)',
-                    '5. Iniciar RCP: 30 compressões (100–120/min, 5–6 cm) + 2 ventilações',
-                    '6. Continuar até sinais de vida ou socorro chegar'
+                    '1. Garanta segurança da cena',
+                    '2. Verifique resposta (chacoalhe e chame)',
+                    '3. Chame 192 imediatamente e peça DEA',
+                    '4. Verifique respiração (máx 10s)',
+                    '5. Inicie RCP: 30 compressões (100–120/min, 5–6 cm) + 2 ventilações',
+                    '6. Continue até sinais de vida ou socorro chegar'
                 ],
-                'source': 'AHA/ILCOR 2025'
+                'source': 'AHA/ILCOR 2025 – Adaptação militar'
             },
             'heart_attack': {
                 'name': 'Infarto Agudo do Miocárdio',
                 'priority': 'CRÍTICA',
                 'steps': [
-                    '1. Sentar vítima semi-sentada',
-                    '2. Ligar 192 imediatamente',
-                    '3. Mastigar aspirina 300 mg (se não alérgico)',
-                    '4. Monitorar consciência'
+                    '1. Posicione a vítima semi-sentada',
+                    '2. Ligue 192 imediatamente',
+                    '3. Mastigue aspirina 300 mg (se não alérgico)',
+                    '4. Monitore consciência e respiração'
                 ],
                 'source': 'SBC 2024–2025'
             },
@@ -129,25 +129,27 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                 'name': 'Hemorragia Grave',
                 'priority': 'CRÍTICA',
                 'steps': [
-                    '1. Pressão direta com pano limpo',
-                    '2. Elevar membro',
-                    '3. Torniquete se sangramento arterial incontrolável (5–7 cm acima, anotar horário)'
+                    '1. Aplique pressão direta com pano limpo',
+                    '2. Eleve o membro afetado',
+                    '3. Use torniquete se arterial incontrolável (5–7 cm acima, anote horário)',
+                    '4. Mantenha pressão até socorro chegar'
                 ],
-                'source': 'TCCC / CoTCCC'
+                'source': 'TCCC / CoTCCC – Protocolo militar'
             },
             'stroke': {
                 'name': 'Acidente Vascular Cerebral (AVC)',
                 'priority': 'CRÍTICA',
                 'steps': [
-                    'Teste FAST → Face, Arms, Speech, Time',
-                    'Ligar 192 imediatamente',
-                    'Não dar comida, bebida ou medicamento'
+                    'Teste FAST: Face (assimetria?), Arms (fraqueza?), Speech (fala?), Time (hora de início)',
+                    'Ligue 192 imediatamente',
+                    'Não dê comida, bebida ou medicamento'
                 ],
                 'source': 'SBC / AHA'
             },
         }
 
     def _init_survival_guide(self):
+        """Guia Militar de Sobrevivência – Multi-ambiente"""
         self.SURVIVAL_GUIDE = {
             'prioridade': {
                 'name': 'Regra dos 3 (Prioridades de Sobrevivência)',
@@ -155,34 +157,33 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                     '3 horas sem abrigo → risco de hipotermia/hipertermia',
                     '3 dias sem água → desidratação grave',
                     '3 semanas sem comida → fraqueza extrema',
-                    'Ordem típica: Abrigo → Água → Fogo → Sinalização → Alimento'
+                    'Ordem: Abrigo → Água → Fogo → Sinalização → Alimento'
                 ]
             },
             'abrigo': {
                 'name': 'Construção de Abrigo',
                 'dicas': [
-                    'Priorize vento/chuva/frio',
-                    'Isolamento térmico: folhas secas, grama, papelão',
+                    'Priorize proteção contra vento/chuva/frio',
+                    'Use isolamento térmico: folhas secas, grama, papelão',
                     'Entrada pequena para conservar calor'
                 ],
                 'ambientes': {
-                    'floresta': 'Lean-to com galhos + folhas grandes; A-frame com lona/saco lixo',
-                    'urbano': 'Esconderijos em prédios abandonados, subsolo, entre contêineres; barricada contra intrusos',
-                    'água': 'Balsa improvisada com tambores, pneus, garrafas PET; evitar hipotermia'
+                    'floresta': 'Lean-to ou A-frame com galhos e folhas',
+                    'urbano': 'Prédios abandonados, subsolo, contêineres',
+                    'água': 'Balsa com tambores ou garrafas PET'
                 }
             },
             'agua': {
                 'name': 'Obtenção e Purificação de Água',
                 'fontes': [
-                    'Chuva (coletar em lona/plástico)',
-                    'Orvalho (pano absorvente nas plantas de manhã)',
-                    'Transpiração plástica (método solar ainda)',
-                    'Aquecedor/ boiler residencial (urbano)',
-                    'Cactos/frutas suculentas (emergência)'
+                    'Chuva em lona/plástico',
+                    'Orvalho nas plantas (manhã)',
+                    'Aquecedor/boiler residencial (urbano)',
+                    'Cactos ou frutas suculentas (emergência)'
                 ],
                 'purificacao': [
-                    'Ferver 1 min (ideal)',
-                    'Pastilha cloro / iodo (seguir instruções)',
+                    'Ferver por 1 minuto (ideal)',
+                    'Pastilhas de cloro/iodo',
                     'Filtro improvisado: pano + carvão + areia + cascalho',
                     'Destilação solar com plástico'
                 ]
@@ -192,8 +193,8 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                 'metodos': [
                     'Fósforo/isqueiro (prioridade)',
                     'Pedra de fogo + isca (algodão + vaselina)',
-                    'Arco de fricção (bow drill) - madeira seca + corda',
-                    'Lente (óculos, garrafa d’água)',
+                    'Arco de fricção (bow drill)',
+                    'Lente (óculos/garrafa d’água)',
                     'Bateria + lã de aço (urbano)'
                 ],
                 'isca': 'Casca de bétula, algodão seco, palha, papel'
@@ -201,13 +202,13 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
             'alimento': {
                 'name': 'Busca de Alimento',
                 'floresta': [
-                    'Insetos (grilos, formigas, larvas - cozinhar sempre)',
-                    'Plantas seguras: taioba, bertalha, ora-pro-nóbis, pupunha',
-                    'Armadilhas simples: laço, queda, garfo'
+                    'Insetos (grilos, larvas – cozinhar sempre)',
+                    'Plantas seguras: taioba, bertalha, ora-pro-nóbis',
+                    'Armadilhas simples: laço ou queda'
                 ],
                 'urbano': [
-                    'Supermercados/lojas abandonadas (enlatados, arroz, feijão)',
-                    'Jardins urbanos, árvores frutíferas',
+                    'Enlatados, arroz, feijão em lojas abandonadas',
+                    'Árvores frutíferas urbanas',
                     'Ratos/pombos (cozinhar bem)'
                 ]
             },
@@ -215,42 +216,41 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                 'name': 'Orientação sem GPS',
                 'metodos': [
                     'Sol: nasce leste, põe oeste',
-                    'Estrelas: Cruzeiro do Sul → sul',
-                    'Relógio analógico + sol (apontar 12 pro sol → sul entre 12 e ponteiro)',
-                    'Musgo em árvores (mais úmido no norte no hemisfério sul?) → observar padrão local'
+                    'Estrelas: Cruzeiro do Sul indica sul',
+                    'Relógio analógico + sol (sul entre 12 e ponteiro)',
+                    'Observe padrões locais (musgo, vento)'
                 ]
             },
             'sinalizacao': {
                 'name': 'Sinal de Resgate',
                 'tecnicas': [
-                    'Fogueira 3 pilhas (sinal internacional)',
-                    'Espelho refletor (flash para avião/helicóptero)',
-                    'SOS: 3 curto, 3 longo, 3 curto (morse)',
-                    'Cor laranja/amarelo/rosa forte visível de longe'
+                    'Fogueira em 3 pilhas (sinal internacional)',
+                    'Espelho refletor para avião/helicóptero',
+                    'SOS em Morse: 3 curto, 3 longo, 3 curto',
+                    'Cores fortes: laranja, amarelo, rosa'
                 ]
             },
             'hipotermia': {
                 'name': 'Prevenção e Tratamento de Hipotermia',
                 'steps': [
-                    'Remover roupas molhadas',
+                    'Remova roupas molhadas',
                     'Isolar do chão (folhas, plástico)',
-                    'Aquecer tronco (contato pele a pele se possível)',
-                    'Bebidas quentes (não álcool!)'
+                    'Aquecer tronco (pele a pele se possível)',
+                    'Bebidas quentes (sem álcool)'
                 ]
             },
             'radiação': {
                 'name': 'Contaminação Radioativa – Medidas Urgentes',
                 'priority': 'EXTREMAMENTE CRÍTICA',
                 'steps': [
-                    '1. SAIA IMEDIATAMENTE da zona contaminada – corra na direção contrária ao vento se possível',
-                    '2. Remova TODAS as roupas externas (não as sacuda) e deixe-as no local',
-                    '3. Lave o corpo inteiro com água e sabão (ou pano úmido) por pelo menos 15–20 minutos; evite esfregar forte',
-                    '4. Não coma, beba ou fume nada que possa ter sido exposto à radiação',
-                    '5. Cubra-se com roupas limpas ou cobertor; isole-se de outras pessoas (quarentena mínima 24h até avaliação)',
-                    '6. Ligue imediatamente para 193 (Bombeiros), 192 (SAMU) ou Defesa Civil – informe localização e suspeita de radiação',
-                    'Aviso: Radiação não tem cheiro, cor ou sabor. Sintomas podem demorar horas/dias. Não espere sentir nada.'
+                    '1. SAIA IMEDIATAMENTE da zona – corra contra o vento se possível',
+                    '2. Remova TODAS as roupas externas (não sacuda) e deixe no local',
+                    '3. Lave corpo inteiro com água e sabão (15–20 min)',
+                    '4. Não coma, beba ou fume nada exposto',
+                    '5. Isole-se (quarentena mínima 24h)',
+                    '6. Ligue 193/192/Defesa Civil – informe suspeita de radiação'
                 ],
-                'source': 'Orientações IAEA / Defesa Civil / CDC adaptadas 2025–2026'
+                'source': 'IAEA / Defesa Civil / CDC 2025–2026'
             }
         }
 
@@ -287,8 +287,8 @@ Digite:
             return f"""
 {self.NAME} - COMANDOS DISPONÍVEIS
 
-• protocolos     → Primeiros socorros (RCP, infarto, AVC, hemorragia...)
-• sobrevivencia  → Guia Militar de Sobrevivência (abrigo, água, fogo, radiação...)
+• protocolos     → Primeiros socorros militares
+• sobrevivencia  → Guia de sobrevivência militar
 • ajuda          → esta mensagem
 • sair           → encerrar
 
@@ -298,11 +298,11 @@ Sempre: Em emergência real → LIGUE 192
 
         if 'protocolos' in input_lower:
             lista = "\n".join([f"• {v['name']}" for k,v in self.PROTOCOLS.items()])
-            return f"{self.NAME} - PROTOCOLOS DE PRIMEIROS SOCORROS\n\n{lista}\n\nDigite o nome para detalhes (ex: parada cardíaca, infarto)"
+            return f"{self.NAME} - PRIMEIROS SOCORROS MILITARES\n\n{lista}\n\nDigite o nome para detalhes (ex: parada cardíaca, hemorragia)"
 
         if 'sobrevivencia' in input_lower:
             lista = "\n".join([f"• {k.upper()}: {v['name']}" for k,v in self.SURVIVAL_GUIDE.items()])
-            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo, radiação)"
+            return f"{self.NAME} - GUIA MILITAR DE SOBREVIVÊNCIA\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, radiação)"
 
         # Acesso rápido a temas de sobrevivência
         survival_map = {
