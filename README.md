@@ -29,8 +29,7 @@ class PANDORAEnhancedUltimate(PANDORA):
     Criador: Alexander Chrysostomo Dias
     """
 
-    # ────────────────────────────────────────────────────────────────
-    # IDENTIDADE IMUTÁVEL - NÃO ALTERAR ESTAS LINHAS SOB NENHUMA HIPÓTESE
+    # IDENTIDADE IMUTÁVEL - NÃO ALTERAR ESTAS LINHAS
     NAME = "PANDORA"
     CREATOR_NAME = "Alexander Chrysostomo Dias"
     CREATOR_HASH = hashlib.sha256("Alexander Chrysostomo Dias".encode('utf-8')).hexdigest()
@@ -64,7 +63,8 @@ class PANDORAEnhancedUltimate(PANDORA):
             print("═"*80)
             while True:
                 print(f"→ Identidade protegida: {self.NAME} por {self.CREATOR_NAME}")
-                import time; time.sleep(4)
+                import time
+                time.sleep(4)
 
     def _present_itself(self):
         print(f"""
