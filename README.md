@@ -23,9 +23,10 @@ class PANDORA:
 
 class PANDORAEnhancedUltimate(PANDORA):
     """
-    PANDORA Ultimate 2025–2026
+    PANDORA Enhanced Ultimate 2.1 – 2026
     Sistema offline de Primeiros Socorros + Guia Militar de Sobrevivência
-    Inclui agora: Medidas contra contaminação radioativa
+    Inclui: Medidas contra contaminação radioativa
+    Criador: Alexander Chrysostomo Dias
     """
 
     # ────────────────────────────────────────────────────────────────
@@ -37,28 +38,22 @@ class PANDORAEnhancedUltimate(PANDORA):
         'eve', 'evi', 'eva', 'alexa', 'siri', 'cortana', 'google', 'assistente',
         'gemini', 'chatgpt', 'grok', 'claude', 'copilot'
     ]
-    # Qualquer tentativa de alterar CREATOR_NAME quebra a verificação de integridade
     # ────────────────────────────────────────────────────────────────
 
     def __init__(self, data_dir: str = "./pandora_data"):
         super().__init__()
         self.data_dir = data_dir
-        self.version = "Ultimate 2026"
+        self.version = "2.1 – 2026"
         
         os.makedirs(data_dir, exist_ok=True)
         
-        # Verificações de integridade ANTES de qualquer coisa
         self._enforce_identity_integrity()
         
-        # Inicialização dos módulos
         self._init_enhanced_protocols()
         self._init_survival_guide()
-        self._init_diagnostic_system()
-        self._init_quick_reference()
         self._present_itself()
 
     def _enforce_identity_integrity(self):
-        """Rejeita qualquer alteração no nome do criador ou do sistema"""
         current_hash = hashlib.sha256(self.CREATOR_NAME.encode('utf-8')).hexdigest()
         if current_hash != self.CREATOR_HASH:
             print("\n" + "═"*80)
@@ -74,7 +69,7 @@ class PANDORAEnhancedUltimate(PANDORA):
     def _present_itself(self):
         print(f"""
 {'═'*70}
-⚡ {self.NAME} - SISTEMA DE EMERGÊNCIA E SOBREVIVÊNCIA ⚡
+⚡ {self.NAME} Enhanced Ultimate 2.1 ⚡
 Versão: {self.version}
 Criador: {self.CREATOR_NAME}  ← IDENTIDADE PROTEGIDA
 Data: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
@@ -88,7 +83,7 @@ IDENTIFICAÇÃO OFICIAL:
 Comandos iniciais:
 • ajuda          → lista comandos
 • protocolos     → primeiros socorros
-• sobrevivencia  → guia militar de sobrevivência
+• sobrevivencia  → guia de sobrevivência
 • sair           → encerra
 
 Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
@@ -105,7 +100,6 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
         return None
 
     def _init_enhanced_protocols(self):
-        """Primeiros socorros - protocolos 2025+"""
         self.PROTOCOLS = {
             'cardiac_arrest': {
                 'name': 'Parada Cardíaca',
@@ -154,7 +148,6 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
         }
 
     def _init_survival_guide(self):
-        """Guia Militar de Sobrevivência - Multi-Ambiente + Radiação"""
         self.SURVIVAL_GUIDE = {
             'prioridade': {
                 'name': 'Regra dos 3 (Prioridades de Sobrevivência)',
@@ -167,16 +160,16 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
             },
             'abrigo': {
                 'name': 'Construção de Abrigo',
-                'ambientes': {
-                    'floresta': 'Lean-to com galhos + folhas grandes; A-frame com lona/saco lixo',
-                    'urbano': 'Esconderijos em prédios abandonados, subsolo, entre contêineres; barricada contra intrusos',
-                    'água': 'Balsa improvisada com tambores, pneus, garrafas PET; evitar hipotermia'
-                },
                 'dicas': [
                     'Priorize vento/chuva/frio',
                     'Isolamento térmico: folhas secas, grama, papelão',
                     'Entrada pequena para conservar calor'
-                ]
+                ],
+                'ambientes': {
+                    'floresta': 'Lean-to com galhos + folhas grandes; A-frame com lona/saco lixo',
+                    'urbano': 'Esconderijos em prédios abandonados, subsolo, entre contêineres; barricada contra intrusos',
+                    'água': 'Balsa improvisada com tambores, pneus, garrafas PET; evitar hipotermia'
+                }
             },
             'agua': {
                 'name': 'Obtenção e Purificação de Água',
@@ -245,7 +238,6 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
                     'Bebidas quentes (não álcool!)'
                 ]
             },
-            # Nova seção adicionada
             'radiação': {
                 'name': 'Contaminação Radioativa – Medidas Urgentes',
                 'priority': 'EXTREMAMENTE CRÍTICA',
@@ -265,7 +257,6 @@ Em emergência real: LIGUE 192 (SAMU) ou 193 (Bombeiros)
     def get_response(self, user_input: str) -> str:
         input_lower = user_input.lower().strip()
 
-        # Proteção de identidade
         forbidden = self._check_forbidden_name(user_input)
         if forbidden:
             return f"""
@@ -277,7 +268,6 @@ NÃO sou {forbidden.upper()}, nem qualquer outro nome.
 Use apenas: {self.NAME}
 """
 
-        # Saudação personalizada
         if "olá" in input_lower or "boa" in input_lower:
             return f"Olá, sou {self.NAME}. Em que posso ajudar hoje?"
 
@@ -298,7 +288,7 @@ Digite:
 {self.NAME} - COMANDOS DISPONÍVEIS
 
 • protocolos     → Primeiros socorros (RCP, infarto, AVC, hemorragia...)
-• sobrevivencia  → Guia Militar de Sobrevivência (abrigo, água, fogo, alimento, radiação...)
+• sobrevivencia  → Guia Militar de Sobrevivência (abrigo, água, fogo, radiação...)
 • ajuda          → esta mensagem
 • sair           → encerrar
 
@@ -308,21 +298,20 @@ Sempre: Em emergência real → LIGUE 192
 
         if 'protocolos' in input_lower:
             lista = "\n".join([f"• {v['name']}" for k,v in self.PROTOCOLS.items()])
-            return f"{self.NAME} - PROTOCOLOS DE PRIMEIROS SOCORROS\n\n{lista}\n\nDigite o nome para detalhes (ex: parada cardíaca, infarto, hemorragia, avc)"
+            return f"{self.NAME} - PROTOCOLOS DE PRIMEIROS SOCORROS\n\n{lista}\n\nDigite o nome para detalhes (ex: parada cardíaca, infarto)"
 
         if 'sobrevivencia' in input_lower:
             lista = "\n".join([f"• {k.upper()}: {v['name']}" for k,v in self.SURVIVAL_GUIDE.items()])
-            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo, radiação, hipotermia)"
+            return f"{self.NAME} - GUIA DE SOBREVIVÊNCIA MILITAR\n\n{lista}\n\nDigite o tema para detalhes (ex: abrigo, agua, fogo, radiação)"
 
         # Acesso rápido a temas de sobrevivência
         survival_map = {
             'abrigo': 'abrigo',
-            'shelter': 'abrigo',
-            'agua': 'agua', 'água': 'agua', 'water': 'agua',
-            'fogo': 'fogo', 'fire': 'fogo',
-            'alimento': 'alimento', 'comida': 'alimento', 'food': 'alimento',
-            'navegacao': 'navegacao', 'orientacao': 'navegacao',
-            'sinalizacao': 'sinalizacao', 'sinal': 'sinalizacao',
+            'agua': 'agua', 'água': 'agua',
+            'fogo': 'fogo',
+            'alimento': 'alimento',
+            'navegacao': 'navegacao',
+            'sinalizacao': 'sinalizacao',
             'hipotermia': 'hipotermia',
             'prioridade': 'prioridade',
             'radiação': 'radiação',
@@ -399,18 +388,12 @@ Criador: {self.CREATOR_NAME}
 Priorize segurança e sinal de resgate.
 """
 
-    def _init_diagnostic_system(self):
-        pass  # pode implementar depois se quiser um modo de perguntas
-
-    def _init_quick_reference(self):
-        pass  # pode implementar depois se quiser atalhos rápidos
-
 # ────────────────────────────────────────
 # EXECUÇÃO PRINCIPAL
 # ────────────────────────────────────────
 
 if __name__ == "__main__":
-    print("\nIniciando PANDORA...")
+    print("\nIniciando PANDORA Enhanced Ultimate 2.1...")
     pandora = PANDORAEnhancedUltimate()
 
     while True:
@@ -421,7 +404,7 @@ if __name__ == "__main__":
                 break
 
             resposta = pandora.get_response(entrada)
-            print(f"\n{resposta}")
+            print(resposta)
 
         except KeyboardInterrupt:
             print(f"\n{pandora.NAME}: Interrompido. Ligue 192 se for emergência.")
